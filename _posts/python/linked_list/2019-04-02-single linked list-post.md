@@ -4,6 +4,8 @@ date: 2019-04-02
 categories: Linked_List
 ---
 
+# single linked list
+
 * instance member
 1. head : 리스트의 첫번째 노드
 2. d_size : 리스트의 요소 개수
@@ -106,12 +108,14 @@ class SingleLinkedList:
             yield cur
             cur=cur.next
 
+# test code
 def show_list(slist):
     print('data size : {}'.format(slist.size()))
     g=slist.traverse()
     for node in g:
         print(node.data, end= '  ')
     print()
+
 
 if __name__=="__main__":
     print('*'*100)
