@@ -48,12 +48,12 @@ class Node:
 	
 class SingleLinkedList:
     def __init__(self):
-		# initialize (초기 설정)
-	    self.head=None
-		# 리스트 초기화
-	    self.d_size=0
+	# initialize (초기 설정)
+	self.head=None
+	# 리스트 초기화
+	self.d_size=0
 	
-	# 리스트가 비어있다면 True, 아니면 False
+    # 리스트가 비어있다면 True, 아니면 False
     def empty(self):
         if self.d_size==0:
             return True
@@ -63,9 +63,9 @@ class SingleLinkedList:
     def size(self):
         return self.d_size
 	
-	# 노드를 리스트의 맨 앞에 추가
+    # 노드를 리스트의 맨 앞에 추가
     def add(self, data):
-		# 새 노드 생성
+	# 새 노드 생성
         new_node=Node(data)
 		
         if self.empty():
@@ -73,14 +73,14 @@ class SingleLinkedList:
             new_node=self.head
         else:
             # head가 새 노드의 next를 가리키게 만든다.
-            self.head=new_node.next
+            self.head=new_node.next	    
         # self.head와 new_node가 같으면 빠져나와서 사이즈 요소 추가
             self.head=new_node
         self.d_size+=1
 		
-	# 리스트에서 target을 찾으면 노드를 반환, 못찾으면 None을 반환
+    # 리스트에서 target을 찾으면 노드를 반환, 못찾으면 None을 반환
     def search(self, target):
-		# cur이 self.head를 가리킨다.
+	# cur이 self.head를 가리킨다.
         cur=self.head
 		
         while cur:
@@ -89,9 +89,9 @@ class SingleLinkedList:
             cur=cur.next
         return None
 	
-	# 맨 앞 노드를 삭제
+    # 맨 앞 노드를 삭제
     def delete(self):
-		# 리스트가 비어있을 경우엔 빠져나가기
+	# 리스트가 비어있을 경우엔 빠져나가기
         if self.empty():
             return
            
@@ -99,7 +99,7 @@ class SingleLinkedList:
         self.d_size-=1 # 리스트의 요소 개수 삭제
 	
 	
-	# 편의 함수
+    # 편의 함수
     def traverse(self):
         cur=self.head
         while cur:
