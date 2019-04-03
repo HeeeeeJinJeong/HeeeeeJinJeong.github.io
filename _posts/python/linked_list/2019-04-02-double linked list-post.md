@@ -4,6 +4,8 @@ date: 2019-04-02
 categories: Linked_List
 ---
 
+# double Linked List
+
 * instance member
 1. head : 리스트 맨 앞에 있는 더미 
 2. tail : 리스트 맨 뒤에 있는 더미
@@ -217,6 +219,8 @@ class DoubleLinkedList:
                 yield cur
                 cur=cur.prev
 
+
+# test code
 def show_list(dlist):
     # generator 객체
     g=dlist.traverse()
