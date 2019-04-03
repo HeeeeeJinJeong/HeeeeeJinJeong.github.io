@@ -28,31 +28,31 @@ class Queue:
 
     # 큐 맨 앞의 데이터를 삭제 하면서 반환
     def dequeue(self):
-	      # 스택이 비었다면 None 반환
+	# 스택이 비었다면 None 반환
         if self.empty():
             return None
         
-	      # 두번째 스택이 비었을 때, 첫번째 스택 데이터를 pop해서 두번째 스택에 push
+	# 두번째 스택이 비었을 때, 첫번째 스택 데이터를 pop해서 두번째 스택에 push
         if self.second.empty():
             while not self.first.empty():
                 self.second.push(self.first.pop())
 
-		    # 두번째 스택에 push한 데이터 반환
+        # 두번째 스택에 push한 데이터 반환
         return self.second.pop()
  
  
- 	  # 큐 맨 앞 데이터를 반환
+    # 큐 맨 앞 데이터를 반환
     def peek(self):
-		    # 스택이 비었다면 None 반환
+        # 스택이 비었다면 None 반환
         if self.empty():
             return None
         
-	      # 두번째 스택이 비었을 때, 첫번째 스택 데이터를 pop해서 두번째 스택에 push
+	# 두번째 스택이 비었을 때, 첫번째 스택 데이터를 pop해서 두번째 스택에 push
         if self.second.empty():
             while not self.first.empty():
                 self.second.push(self.first.pop())
 
-	      # 두번째 스택에 push한 데이터 반환
+	# 두번째 스택에 push한 데이터 반환
         return self.second.peek()
 
 
