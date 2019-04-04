@@ -1,5 +1,5 @@
 ---
-title: ""
+title: "scores_functions"
 date: 2019-04-04
 categories: oop
 ---
