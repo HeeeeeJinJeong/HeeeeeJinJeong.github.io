@@ -1,10 +1,10 @@
 ---
-title: "scores_functions"
+title: "procedure"
 date: 2019-04-04
 categories: oop
 ---
 
-1. 절차 지향 프로그래밍(procedural programming)
+
 ```python
 from openpyxl import load_workbook
 form functools import reduce
@@ -89,8 +89,10 @@ elif avrg > 50 and std_dev < 20:
     print('성적도 평균 이상이고 학생들의 실력 차이도 크지 않다.')
 ```
 
-2. 객체 지향 프로그래밍(object-oriented programming)
+# 절차 지향 프로그래밍(procedural programming)
+
 ```python
+
 from openpyxl import load_workbook
 from functools import reduce
 import math
@@ -172,4 +174,35 @@ if __name__=='__main__':
     print(std_dev) #35.22
 
     get_evaluation(avg,60,std_dev) # 성적이 너무 저조, 학생들의 실력차이가 너무 크다
+```
+
+* user programmer
+실제 프로그램이 실행될 메인 파일의 코드
+```python
+import sys
+# functions.py 파일의 코드를 다 긁어서 붙인거
+from functions import (get_raw_data, get_average, get_variance, get_scores, get_std_dev, get_evaluation)
+
+if not len(sys.argv)==3 and not len(sys.argv)==4:
+    print('usage : python main.py <exel filename> <total_avg> <sd=20>')
+    exit(-1) # 여기서 강제 종료
+
+filename=sys.argv[1]
+total_avg=float(sys.argv[2])
+if len(sys.argv)==4:
+    sd=float(sys.argv[3])
+
+raw_data=get_raw_data(filename)
+raw_data=get_raw_data(sys.argv[1])
+scores=get_scores(raw_data)
+avg=get_average(scores)
+var=get_variance(scores, avg)
+std_dev=get_std_dev(var)
+
+print(f'평균 : {avg}, 분산 : {var}, 표준편차 : {std_dev}')
+
+if len(sys.argv)==4:
+    get_evaluation(avg, total_avg, std_dev, sd)
+elif len(sys.argv)==3:
+    get_evaluation(avg, total_avg, std_dev)
 ```
