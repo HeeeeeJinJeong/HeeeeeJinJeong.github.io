@@ -107,7 +107,7 @@ analytics:
 # Site Author
 author:
   name             : "heejin"
-  avatar           : # path of avatar image, e.g. "/assets/images/bio-photo.jpg"
+  avatar           : "/assets/images/IMG_3559.JPG" # path of avatar image, e.g. "/assets/images/bio-photo.jpg"
   bio              : ""
   location         : ""
   email            :
