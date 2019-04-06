@@ -34,6 +34,8 @@ class Human(Animal):
     def eat(self):
         print('eat meat and grass')
 
+
+# test code
 if __name__=='__main__':
     animals=[]
     animals.extend((Lion(), Deer(), Human()))
