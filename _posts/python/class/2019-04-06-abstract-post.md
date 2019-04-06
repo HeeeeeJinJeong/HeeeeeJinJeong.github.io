@@ -15,6 +15,8 @@ categories: class
 from abc import *
 
 # abstract code
+# 메서드 구현부를 pass로 해 함수 몸체를 비워두면 eat()는 추상 메서드가 됨
+# 파생 클래스에서 반드시 overriding 해야 함(재정의 필수)
 class Animal:
     @abstractmethod
     def eat(self):
