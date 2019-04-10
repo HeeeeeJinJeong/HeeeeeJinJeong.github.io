@@ -1,8 +1,8 @@
 
 ---
 title: "regular_expression"
-date: 2019-04-06
-categories: python
+date: 2019-04-10
+categories: regular_expression
 ---
 
 
