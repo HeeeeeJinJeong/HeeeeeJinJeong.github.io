@@ -5,6 +5,37 @@ categories: tree
 ---
 
 # binary tree
+사이클이 없는 연결된 그래프(connected acyclic graph)
+
+- degree(차수) : 어떤 노드의 자식 노드의 개수
+- degree of a tree(트리의 차수) : 트리에 있는 노드의 최대 차수
+- leaf node : 차수가 0인 노드, 자식이 없는 노드(단말 노드 라고도 부름)
+- level : root의 레벨을 1로 하고 자식으로 내려가면서 하나씩 더한다.
+- 트리의 높이(heigth) or 깊이(depth) : 트리가 가지는 최대 레벨
+- forest : 노트 노드를 없앤 후 얻은 서브 트리의 집합
+- edge : 노드 사이를 연결하는 선, link라고도 부름
+- 노드와 엣지의 관계 : e = n - 1 (노드의 개수 : n, 엣지의 개수 : e)
+
+## 이진 트리의 특징
+- 레벨 l에서 최대 노드수 : 2의 l-1승 개
+- 높이가 h인 이진 트리의 최대 노드 수 : 2의 h-1승 개
+- 높이가 h인 이진 트리의 최소 노드 수 : h개
+
+## 이진 트리의 종류
+1. 포화 이진 트리 (full binary tree) : 모든 레벨이 꽉 차 있는 트리
+2. 완전 이진 트리 (complete binary tree) : 트리의 노드가 위에서 아래로, 왼쪽에서 오른쪽으로 채워지는 트리
+3. 편향 이진 트리 (skewed binary tree) : 왼쪽이나 오른쪽 서브 트리만 가지는 트리
+
+## 트리의 순회
+- stack 계열 : DFS(Depth First Search)
+1. 전위 순회(preorder traversal) : 노드 -> 왼쪽 서브 트리 -> 오른쪽 서브 트리
+2. 중위 순회(inorder traversal) : 왼쪽 서브 트리 -> 노드 -> 오른쪽 서브 트리
+3. 후위 순회(postorder traversal) : 왼쪽 서브 트리 -> 오른쪽 서브 트리 -> 노드
+
+
+- queue 계열 : BPS(Brouth First Search)
+1. 레벨 순회(level order traversal) : 레벨 순서대로 순회
+
 
 ```python
 from stack import Stack
