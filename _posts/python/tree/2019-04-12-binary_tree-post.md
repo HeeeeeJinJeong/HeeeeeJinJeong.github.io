@@ -27,7 +27,9 @@ categories: tree
 3. 편향 이진 트리 (skewed binary tree) : 왼쪽이나 오른쪽 서브 트리만 가지는 트리
 
 ## 트리의 순회
-- stack 계열 : DFS(Depth First Search)
+재방문을 허용하지 않고 트리를 구성하는 모든 노드를 한번씩 방문하는 것
+
+- stack 계열 : DFS(Depth First Search) / 재귀, 반복문+stack
 1. 전위 순회(preorder traversal) : 노드 -> 왼쪽 서브 트리 -> 오른쪽 서브 트리
 2. 중위 순회(inorder traversal) : 왼쪽 서브 트리 -> 노드 -> 오른쪽 서브 트리
 3. 후위 순회(postorder traversal) : 왼쪽 서브 트리 -> 오른쪽 서브 트리 -> 노드
