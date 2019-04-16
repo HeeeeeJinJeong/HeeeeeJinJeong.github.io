@@ -8,6 +8,7 @@ categories: python
 쉽게 기능을 추가할 수 있다.
 
 ```python
+# ex 1
 def outer(org_func):
     def inner(*args, **kwargs): # *, ** -> 가변인자
         # 추가하는 기능을 구현
@@ -46,4 +47,22 @@ def something(a,b):
     return a+b
 
 print(something(1,2))
+
+# ex 3
+g_call_num=0
+def callcounter(org_func):
+    def inner(*args,**kwargs):
+        global g_call_num
+        g_call_num+=1
+
+        print(f'{g_call_num}번 호출했습니다.')
+        return org_func(*args, **kwargs)
+    return inner
+
+@callcounter
+def func(a,b):
+    return a+b
+
+for i in range(10):
+    func(1,2)
 ```
