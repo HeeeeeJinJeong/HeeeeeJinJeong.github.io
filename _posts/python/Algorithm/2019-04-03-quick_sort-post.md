@@ -19,6 +19,22 @@ pivot을 기준으로 왼쪽은 pivot보다 작은 데이터, 오른쪽은 큰 �
 ```python
 import random
 
+def get_pivot_index(li,start,mid,end):
+    '''
+    get_pivot_index(li,start,mid,end) -> index
+    리스트의 처음 값, 가운데 값, 마지막 값 중에서 중간 값을 가진 인덱스를 반환한다.
+    '''
+    idx_li=[start, mid, end]
+    
+    if li[idx_li[0]] > li[idx_li[1]]:
+        idx_li[0], idx_li[1]=idx_li[1], idx_li[0]
+    if li[idx_li[1]] > li[idx_li[2]]:
+        idx_li[1], idx_li[2]=idx_li[2], idx_li[1]
+    if li[idx_li[0]] > li[idx_li[1]]:
+        idx_li[0], idx_li[1]=idx_li[1], idx_li[0]
+    
+    return idx_li[1]
+    
 def quick_sort(data,start,end):
     # 기저조건 : start가 end보다 크거나 같을 때
     if start>=end:
