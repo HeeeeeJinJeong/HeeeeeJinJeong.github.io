@@ -10,9 +10,7 @@ image = models.ImageField(upload_to='timeline_photo/%Y/%m/%d')
 
 3. python manage.py migrate photo
 
-4. photo / static / images 폴더 생성
-
-5. config / settings.py
+4. config / settings.py
 맨 아래에 내용 추가
 ```python
 STATIC_URL = '/static/'
