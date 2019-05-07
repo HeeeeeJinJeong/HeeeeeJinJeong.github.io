@@ -418,4 +418,4 @@ Superuser created successfully.
 ```
 
 12. app 접속
-https://wps-dstargram.herokuapp.com/
+- https://wps-dstargram.herokuapp.com/
