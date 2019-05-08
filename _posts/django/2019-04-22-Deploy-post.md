@@ -419,3 +419,49 @@ Superuser created successfully.
 
 12. app 접속
 - https://wps-dstargram.herokuapp.com/
+
+### 이미지 띄우기(아마존)
+- boto3 : 아마존S3 를 사용할 수 있게 pip install boto3
+- django-storages : 장고 프로젝트에서 특정 storages 를 사용할 수 있게 pip install django-storages
+
+1. static 파일들 대체
+```python
+# STATIC_URL = '/static/'
+# STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+
+AWS_ACCESS_KEY_ID = 'your-key'
+AWS_SECRET_ACCESS_KEY = 'your-secret-key'
+AWS_REGION = 'ap-northeast-2'
+AWS_STORAGE_BUCKET_NAME = 'your-bucket-name'
+AWS_S3_CUSTOM_DOMAIN = '%s.s3.%s.amazonaws.com' % (AWS_STORAGE_BUCKET_NAME,AWS_REGION)
+AWS_S3_OBJECT_PARAMETERS = {
+    'CacheControl': 'max-age=86400',
+}
+AWS_DEFAULT_ACL = 'public-read'
+AWS_LOCATION = 'static'
+
+STATIC_URL = 'https://%s/%s/' % (AWS_S3_CUSTOM_DOMAIN, AWS_LOCATION)
+STATICFILES_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+```
+
+- python manage.py collectstatic
+```terminal
+(venv) ➜  dstargram_project git:(master) ✗ python manage.py collectstatic
+
+You have requested to collect static files at the destination
+location as specified in your settings.
+
+This will overwrite existing files!
+Are you sure you want to do this?
+
+Type 'yes' to continue, or 'no' to cancel: yes
+
+120 static files copied.
+(venv) ➜  dstargram_project git:(master) ✗ 
+
+```
+
+2. media 파일들 대체
+```python
+
+```
