@@ -462,6 +462,90 @@ Type 'yes' to continue, or 'no' to cancel: yes
 ```
 
 2. media 파일들 대체
+- INSTALLED_APPS 에 storages 추가
 ```python
+INSTALLED_APPS = [
+    'django.contrib.admin',
+    'django.contrib.auth',
+    'django.contrib.contenttypes',
+    'django.contrib.sessions',
+    'django.contrib.messages',
+    'django.contrib.staticfiles',
+    'accounts',
+    'photo',
+    'disqus',
+    'django.contrib.sites',
+    'storages',
+]
+```
 
+```python
+# MEDIA_URL = '/res/'
+# MEDIA_ROOT = os.path.join(BASE_DIR,'media')
+
+DEFAULT_FILE_STORAGE = 'config.asset_storage.MediaStorage'
+```
+
+- config / asset_storage.py 파일 생성
+```python
+from storages.backends.s3boto3 import S3Boto3Storage
+
+class MediaStorage(S3Boto3Storage):
+    location = 'media'
+    file_overwrite = False
+```
+
+- config / urls.py 의 아래 내용 지우거나 주석처리
+```python
+urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+```
+
+- 이미 업로드 한 이미지 파일 처리, 루트 밑에 s3_upload 파일 생성(한번 실행 후 런서버)
+```python
+import boto3 # s3에 파일을 업로드
+import os # 현재 업로드 할 파일 탐색
+
+def upload_files(search_path, target_path):
+    session = boto3.Session(
+        aws_access_key_id='your-key',
+        aws_secret_access_key='your-secret-key',
+        region_name='ap-northeast-2'
+    )
+
+    s3 = session.resource('s3')
+    bucket = s3.Bucket('your-bucket-name')
+
+    for current_dir, sub_dirs, files in os.walk(search_path):
+        print(current_dir, sub_dirs, files)
+
+        for file in files:
+            full_path = os.path.join(current_dir, file)
+            # print(full_path)
+
+            with open(full_path, 'rb') as data:
+                bucket.put_object(Key=target_path+'/'+(full_path.replace("\\", "/"))[len(search_path)+1:],Body=data, ACL='public-read') # s3 경로
+
+
+if __name__=="__main__":
+    upload_files('./media', 'media')
+```
+
+3. AWS
+- Route 53 -> DNS관리 -> 호스팅 영역 생성 -> 레코드 세트 생성
+
+4. RDS -> 파라미터 그룹 -> 파라미터 그룹 생성 (한국어 지원을 위해) -> postgreg9.6
+
+5. settings.py
+```python
+# pip install psycopg2-binary
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME':'dstargram',
+        'USER':'admin_wps10',
+        'PASSWORD':'misaki1228!',
+        'HOST':'dstargram.czf1yineqjau.us-east-2.rds.amazonaws.com',
+        'PORT':'5432',
+    }
+}
 ```
