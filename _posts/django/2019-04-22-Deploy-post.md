@@ -251,7 +251,7 @@ DATABASES['default'].update(dj_database_url.config(conn_max_age=500))
 
 # 맨 아래
 STATIC_URL = '/static/'
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles') # static 파일들을 모아줌
 ```
 - 루트 파일 밑에 'Procfile' 파일 생성 후 아래 내용 입력
 ```text
@@ -271,7 +271,7 @@ db.sqlite3
 .DS_Store
 ```
 
-7. git
+7. git - heroku login
 ```terminal
 (venv) ➜  dstargram_project git:(master) ✗ heroku login
 heroku: Press any key to open up the browser to login or q to exit: 
@@ -414,13 +414,13 @@ Password (again):
 This password is too short. It must contain at least 8 characters.
 Bypass password validation and create user anyway? [y/N]: y
 Superuser created successfully.
-(venv) ➜  dstargram_project git:(master) ✗ 
+(venv) ➜  dstargram_project git:(master) ✗ heroku open
 ```
 
 12. app 접속
 - https://wps-dstargram.herokuapp.com/
 
-### 이미지 띄우기(아마존)
+### S3 셋팅 - 이미지 띄우기(아마존)
 - boto3 : 아마존S3 를 사용할 수 있게 pip install boto3
 - django-storages : 장고 프로젝트에서 특정 storages 를 사용할 수 있게 pip install django-storages
 
