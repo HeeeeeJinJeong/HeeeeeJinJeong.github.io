@@ -418,8 +418,8 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME':'dstargram',
-        'USER':'admin_wps10',
-        'PASSWORD':'misaki1228!',
+        'USER':'',
+        'PASSWORD':'',
         'HOST':'dstargram.czf1yineqjau.us-east-2.rds.amazonaws.com',
         'PORT':'5432',
     }
