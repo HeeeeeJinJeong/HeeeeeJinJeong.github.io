@@ -1,6 +1,7 @@
 # 배포 Deploy : 서버에 올린다.
 ## 1. Pythonanywhere /w Github
 
+https://github.com/HeeeeeJinJeong/HeeeeeJinJeong.github.io/blob/master/_posts/django/PythonAnywhere%20Deploy.pptx
 
 
 ## 2. Heroku
@@ -62,6 +63,7 @@ COMMANDS
 
 (venv) ➜  dstargram_project git:(master) ✗ 
 ```
+
 4. 추가 모듈 설치
 - pip install dj-database-url : 데이터 베이스 관련 옵션을 변수로 쉽게 접근할 수 있기 해주는 유틸리티
 - pip install gunicorn : wsgi용 미들웨어 - 웹서버와 장고 사이의 다리 역할
