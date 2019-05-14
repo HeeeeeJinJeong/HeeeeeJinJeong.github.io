@@ -39,7 +39,7 @@
 - q1 | q2 | q3
 ```python
 if search_key and search_type:
-    documents = documents = get_list_or_404(Document, q1|q2|q3)
+    documents = get_list_or_404(Document, q1|q2|q3)
 ```
 
 ```shell
