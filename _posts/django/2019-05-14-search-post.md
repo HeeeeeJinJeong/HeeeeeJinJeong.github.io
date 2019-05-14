@@ -25,6 +25,13 @@
 - ex) created__lt = 오늘 -> 작성일이 오늘보다 이전
 - ex) 판매시작일__lte = 오늘 -> 판매시작일 설정값이 오늘보다 작거나 같으면 판매 시작
 
+### Q
+- objects.filter() : filter 메서드에 들어가는 매개변수들은 항상 and 연산을 한다.
+- or 연산을 하고싶어서 Q 객체를 사용한다. ( 사용법은 filter 에 들어가는 매개변수의 작성법과 똑같다.
+- Q() | Q() -> or
+- Q() & Q() -> and
+- ~Q() -> not
+
 ```shell
 (venv) ➜  board_project git:(master) ✗ python manage.py shell
 Python 3.7.1 (v3.7.1:260ec2c36a, Oct 20 2018, 03:13:28) 
