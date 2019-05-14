@@ -32,6 +32,16 @@
 - Q() & Q() -> and
 - ~Q() -> not
 
+### 옵션
+- username : Q(author__username__icontains=search_key)
+- title : Q(title__icontains=search_key)
+- text : Q(text__icontains=search_key)
+- q1 | q2 | q3
+```python
+if search_key and search_type:
+    documents = documents = get_list_or_404(Document, q1|q2|q3)
+```
+
 ```shell
 (venv) ➜  board_project git:(master) ✗ python manage.py shell
 Python 3.7.1 (v3.7.1:260ec2c36a, Oct 20 2018, 03:13:28) 
@@ -80,9 +90,28 @@ def document_list(request):
     # documents = Document.objects. all()
     # documents = get_list_or_404(Document)
 
-    search_key = request.GET.get('search_key',None)
-    if search_key:
-        documents = get_list_or_404(Document, title__icontains = search_key)
+    search_type = request.GET.getlist('search_type', None)
+    # request.GET.get -> 아이템 1
+    # request.GET.getlist -> 리스트 형태로
+
+
+    search_q = None
+    search_key = request.GET.get('search_key', None)
+
+    if search_key and search_type:
+        if 'title' in search_type:
+            search_q = Q(title__icontains=search_key)
+            # search_q = search_q | temp_q if search_q else temp_q
+        if 'username' in search_type:
+            search_q = Q(author__username__icontains=search_key)
+            # search_q = search_q | temp_q if search_q else temp_q
+        if 'text' in search_type:
+            search_q = Q(text__icontains=search_key)
+            # search_q = search_q | temp_q if search_q else temp_q
+        if 'all' in search_type:
+            search_q = Q(title__icontains=search_key) | Q(author__username__icontains=search_key) | Q(text__icontains=search_key)
+
+        documents = get_list_or_404(Document, search_q)
     else:
         documents = get_list_or_404(Document)
 
@@ -99,12 +128,18 @@ def document_list(request):
 
     documents = documents[start_index:end_index]
     return render(request, 'board/document_list.html', {'object_list':documents, 'total_page':total_page, 'page_range':page_range})
-
 ```
 
 ### document_list.html
 ```html
 <form action="" method="get" id="search_form" class="form-inline justify-content-center">
+    <select class="custom-select custom-select-sm" style="margin-right:1em;" name="search_type">
+        <option value="all">All</option>
+        <option value="username">작성자</option>
+        <option value="title">글 제목</option>
+        <option value="text">글 내용</option>
+    </select>
+
     <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search" name="search_key">
     <button class="btn btn-outline-dark my-2 my-sm-0" type="submit">Search</button>
 </form>
