@@ -46,9 +46,43 @@ if search_key and search_type:
 ## F
 from django.db.models import F
 
-##
+###
 - title이 text에 포함되어 있는지 확인 : Document.objects.filter(text__icontains=F('title'))
 - text에 유저이름이 포함되어 있는지 확인 : Document.objects.filter(text__icontains=F('author__username'))
+
+## exclude() 제외
+- Document.objects.exclude(title__icontains='sd') : title에 'sd' 가 들어있는 포스트를 제외하고 출력
+- Document.objects.exclude(category__in=Category.objects.filter(name__icontains='dubu')) : 'dubu' 카테고리 제외하고 출력
+
+### exclude 옵션
+1. 블로그 제목에 제외 키워드가 있는 경우
+2. 블로그 생성일이 한달 이내인 경우
+- Document.objects.exclude(blog__in=Blog.objects.filter(title__icontains='key', created__gt=datetime.now()-timedelta(months=1))
+3. 나머지 글들만
+
+
+### QuerySet
+```python
+# 1) QuerySet의 기본 정렬값 : 모델에서 설정값
+Model:
+    class Meta:
+        ordering = ['field name']
+        
+# 2) 기본 정렬값은 pk
+Document.objects.all().order_by('title') 오름차순 - asc
+Document.objects.all().order_by('-title') 내림차순 - desc
+
+# delete
+Document.objects.get(pk=1).delete()
+
+# update
+Document.objects.get(pk=1).update(title="dd")
+
+# 전체 레코드 갱신
+Document.objects.all().update(title="dd")
+Document.objects.filter(title__icontains='word').update(title="dd")
+```
+
 
 ```shell
 >>> from django.db.models import F, Q
