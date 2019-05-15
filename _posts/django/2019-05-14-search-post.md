@@ -7,6 +7,7 @@
 
 
 ## filter
+### .filter를 많이 써도 실제 값을 요청하기 전까지는 쿼리문이 실행되지 않음
 - 필드명 = "값" 매칭
 - 필드명_exact = "값" 매칭
 - 필드명_iexact = "값" 대소문자 구분 없이 매칭
@@ -25,7 +26,7 @@
 - ex) created__lt = 오늘 -> 작성일이 오늘보다 이전
 - ex) 판매시작일__lte = 오늘 -> 판매시작일 설정값이 오늘보다 작거나 같으면 판매 시작
 
-### Q
+## Q
 - objects.filter() : filter 메서드에 들어가는 매개변수들은 항상 and 연산을 한다.
 - or 연산을 하고싶어서 Q 객체를 사용한다. (사용법은 filter 에 들어가는 매개변수의 작성법과 똑같다.)
 - Q() | Q() -> or
@@ -40,6 +41,26 @@
 ```python
 if search_key and search_type:
     documents = get_list_or_404(Document, q1|q2|q3)
+```
+
+## F
+from django.db.models import F
+
+##
+- title이 text에 포함되어 있는지 확인 : Document.objects.filter(text__icontains=F('title'))
+- text에 유저이름이 포함되어 있는지 확인 : Document.objects.filter(text__icontains=F('author__username'))
+
+```shell
+>>> from django.db.models import F, Q
+>>> from board.models import *
+>>> Document.objects.all()
+<QuerySet [<Document: dubu>, <Document: DUBUd>, <Document: sadsdfa>, <Document: sd>, <Document: asdf>, <Document: asdd>]>
+>>> Document.objects.filter(title__icontains='as')
+<QuerySet [<Document: asdf>, <Document: asdd>]>
+>>> Document.objects.filter(text__icontains=F('title'))
+<QuerySet [<Document: asdd>]>
+>>> Document.objects.filter(text__icontains=F('author__username'))
+<QuerySet []>
 ```
 
 ```shell
@@ -70,6 +91,16 @@ Type "help", "copyright", "credits" or "license" for more information.
 >>> Document.objects.filter(category__name__endswith='d')
 <QuerySet []>
 ```
+
+### Document.objects.prefetch_related('author').all()
+1) select_related -> join query를 만들어서 한큐에 데이터를 불러온다.
+- ForeignKey까지만 묶을 수 있다.
+
+2) prefetch_related -> Document 부르고, Category 불러서 -> 코드단에서 병합
+- ManyToMany 도 지원
+
+3. select_related, prefetch_related 를 사용하지 않는 경우
+- 참조 테이블에 대한 데이터 질의를 항상 실행한다(DB에 부담이 높음)
 
 ### views.py
 ```python
