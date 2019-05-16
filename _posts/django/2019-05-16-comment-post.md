@@ -50,7 +50,7 @@ def document_detail(request, document_id):
 ```
 
 4. template
-- comment_list.html
+- detail.html 에 내용 추가
 ```html
 <form action="" method="post">
     {% csrf_token %}
@@ -77,7 +77,7 @@ def document_detail(request, document_id):
      </table>
 ```
 
-### 2번째 방법
+### 2번째 방법 : 댓글 템플릿을 분리
 1. views.py
 ```python
 from .forms import CommentForm
