@@ -176,3 +176,107 @@ urlpatterns = [
 </div>
 ```
 
+## 수정, 삭제
+### 페이지에 접근했을 때 구동되는 로직들
+[함수형 뷰]
+1. 해당 객체가 있는지 확인 - get_object_or_404, objects.get, objects.filter.exists
+2. 객체에 대한 권한 체크 - 작성자, 관리자
+3-1. get -> 해당 페이지에 필요한 값 입력 받기(form)
+3-2. post -> 입력받은 값에 대한 처리 -> 삭제, 업데이트
+4. 처리 후 페이지 이동
+
+[클래스형 뷰]
+```python
+def dispatch(self, request, *args, **kwargs):
+    object = self.get_object()
+    # 권한 체크
+    # super().dispatch(request, *args, **kwargs)
+    
+    if request.method == "POST":
+        # super().post(request, *args, **kwargs)
+    else:
+        # super().get(request, *args, **kwargs)
+```
+1. 객체에 대한 권한 체크 - 작성자, 관리자 - dispatch
+2. 해당 객체가 있는지 확인 - get_object_or_404, objects.get, objects.filter.exists
+- get_object, get_queryset
+3-1. get -> 해당 페이지에 필요한 값 입력 받기 - def get
+3-2. post -> 입력받은 값에 대한 처리 -> 삭제, 업데이트 - def post
+4. 처리 후 페이지 이동
+
+### 코드
+- views.py
+```python
+from django.contrib import messages
+def comment_update(request, comment_id):
+    comment = get_object_or_404(Comment, pk=comment_id)
+    document = get_object_or_404(Document, pk=comment.document.id)
+    # user.is_staff
+    # user.is_superuser
+    if request.user != comment.author:
+        messages.warning(request, "권한 없음")
+        return redirect(document)
+
+    if request.method == "POST":
+        form = CommentForm(request.POST, instance=comment)
+        if form.is_valid():
+            form.save()
+            return redirect(document)
+    else:
+        form = CommentForm(instance=comment)
+    return render(request, 'board/comment/comment_update.html',{'form':form})
+
+def comment_delete(request, comment_id):
+    comment = get_object_or_404(Comment, pk=comment_id)
+    document = get_object_or_404(Document, pk=comment.document.id)
+
+    if request.user != comment.author and not request.user.is_staff and request.user != document.author:
+        messages.warning(request, "권한 없음")
+        return redirect(document)
+
+    if request.method == "POST":
+        comment.delete()
+        return redirect(document)
+    else:
+        return render(request, 'board/comment/comment_delete.html',{'object':comment})
+
+```
+
+- urls.py
+```python
+from django.urls import path
+from .views import *
+
+app_name = 'board'
+
+urlpatterns = [
+    path('comment/update/<int:comment_id>/', comment_update, name='comment_update'),
+    path('comment/delete/<int:comment_id>/', comment_delete, name='comment_delete'),
+]
+```
+
+- template
+1. update
+```html
+{% extends 'base.html' %}
+{% block content %}
+<form action="" method="post">
+    {% csrf_token %}
+    {{form.as_p}}
+    <input type="submit" value="Update" class="btn btn-outline-warning">
+</form>
+{% endblock %}
+```
+
+2. delete
+```html
+{% extends 'base.html' %}
+{% block content %}
+<form action="" method="post">
+    <div class="alert alert-danger">Do you want to delete {{object}}?</div>
+    {% csrf_token %}
+    {{form.as_p}}
+    <input type="submit" value="Delete Confirm" class="btn btn-outline-danger">
+</form>
+{% endblock %}
+```
