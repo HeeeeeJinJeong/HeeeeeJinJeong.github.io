@@ -71,3 +71,33 @@ class CustomUserAdmin(UserAdmin):
 admin.site.register(User, UserAdmin)
 ```
 
+## email_login 추가
+
+- app 안에 backends.py 생성
+```python
+from django.contrib.auth.backends import ModelBackend
+from django.contrib.auth import get_user_model
+
+class CustomUserBackend(ModelBackend):
+    def authenticate(self, request, username=None, password=None, **kwargs):
+        user = super().authenticate(request, username, password, **kwargs)
+
+        if user:
+            return user
+
+        # id login fail
+        # email login
+        UserModel = get_user_model()
+
+        if username is None:
+            email = kwargs.get(UserModel.EMAIL_FIELD, kwargs.get('email'))
+        try:
+            user = UserModel._default_manager.get(email=email)
+
+        except UserModel.DoesNotExist:
+            UserModel().set_password(password)
+
+        else:
+            if user.check_password(password) and self.user_can_authenticate(user):
+                return user
+```
