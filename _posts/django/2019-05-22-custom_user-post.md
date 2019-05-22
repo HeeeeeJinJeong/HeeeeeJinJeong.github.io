@@ -101,3 +101,10 @@ class CustomUserBackend(ModelBackend):
             if user.check_password(password) and self.user_can_authenticate(user):
                 return user
 ```
+
+- settings.py
+```python
+AUTHENTICATION_BACKENDS = [
+    'account.backends.CustomUserBackend',
+]
+```
