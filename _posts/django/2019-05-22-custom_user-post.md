@@ -89,7 +89,10 @@ class CustomUserBackend(ModelBackend):
         # email login
         UserModel = get_user_model()
 
-        if username is None:
+        # id 로그인 처리시 username 이 넘어왔을 경우, email 변수에 새로 값을 할당하기 위해
+        email = username
+
+        if email is None:
             email = kwargs.get(UserModel.EMAIL_FIELD, kwargs.get('email'))
         try:
             user = UserModel._default_manager.get(email=email)
