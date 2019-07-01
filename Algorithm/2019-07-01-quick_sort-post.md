@@ -21,7 +21,7 @@ def quick_sort(arr,start,end):
     right=end
     pivot=arr[(left+right)//2] # 정렬되지 않은 리스트에서 가운데 위치한 인덱스의 '데이터'
     
-    
+    # partition
     while left<=right: # left와 right가 교차할 때까지 반복
         while arr[left]<pivot: # pivot보다 큰 데이터를 만날때까지 +
             left+=1
