@@ -209,3 +209,62 @@ def document_list(request):
     <button class="btn btn-outline-dark my-2 my-sm-0" type="submit">Search</button>
 </form>
 ```
+
+### post/views.py
+```python
+def post_list(request, page):
+    # posts = get_list_or_404(Post)
+
+    # 페이지 번호 얻기
+    page = page if page else 1
+    page = int(page)
+
+    queryset = Post.objects.all()  # CBV : get_queryset
+
+    # post으로 전달된 데이터 중에서 search 변수값 찾기
+    search_keyword = request.POST.get('search', request.GET.get('search', None))
+    context_data = {}
+    if search_keyword:
+        q = Q(text__icontains=search_keyword)
+        q |= Q(title__icontains=search_keyword)
+        queryset = queryset.filter(q)
+        context_data.update({'search_keyword': search_keyword})
+
+    # 페이징 처리
+    paginator = Paginator(queryset, 3)
+    page = paginator.page(page)
+    context_data.update({'object_list': page.object_list,
+                         'paginator': paginator, 'page_obj': page, 'is_paginated': True})
+
+    return render(request, 'post/post_list.html', context_data)
+```
+### post_list.html
+```html
+{% if is_paginated %}
+
+    <ul class="pagination justify-content-center pagination-sm">
+        {% if page_obj.has_previous %}
+        <li class="page-item"><a
+                href="{% url 'post:list' page_num %}{% if search_keyword %}?search={{search_keyword}}{% endif %}"
+                class="page-link">이전페이지</a></li>
+        {% else %}
+        <li class="page-item disabled"><a href="#" class="page-link">이전페이지</a></li>
+        {% endif %}
+
+        {% for page_num in paginator.page_range %}
+        <li class="page-item {% if page_obj.number == page_num %}disabled{% endif %}"><a
+                href="{% url 'post:list' page_num %}{% if search_keyword %}?search={{search_keyword}}{% endif %}"
+                class="page-link">{{page_num}}</a></li>
+        {% endfor %}
+
+        {% if page_obj.has_next %}
+        <li class="page-item"><a
+                href="% url 'post:list' page_num %}{% if search_keyword %}?search={{search_keyword}}{% endif %}"
+                class="page-link">다음페이지</a></li>
+        {% else %}
+        <li class="page-item disabled"><a href="#" class="page-link">다음페이지</a></li>
+        {% endif %}
+    </ul>
+
+    {% endif %}
+```
